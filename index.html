@@ -1,1173 +1,826 @@
 <!DOCTYPE html>
-<html lang="uk" class="h-full dark">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Вступ до фаху | Стоматологія 1 курс</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050811">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Вступ до фаху · Тест до заліку</title>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: {
-                            950: '#090d16',
-                            900: '#0f172a',
-                            850: '#151f32',
-                            800: '#1e293b',
-                            700: '#334155',
-                        },
-                        navy: {
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        },
-                        cyan: {
-                            400: '#22d3ee',
-                            500: '#06b6d4',
-                        }
-                    },
-                    boxShadow: {
-                        'glow-blue': '0 0 25px -5px rgba(37, 99, 235, 0.4)',
-                        'glow-cyan': '0 0 20px -5px rgba(6, 182, 212, 0.3)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-                    }
-                }
-            }
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Inter', 'system-ui', 'sans-serif']
+          }
         }
-    </script>
-    <style>
-        /* Smooth scrolling & custom scrollbar */
-        html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+      }
+    };
+  </script>
 
-        /* Glassmorphism styling */
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-panel-active {
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-        }
-        
-        /* Mobile Dynamic Island / Notch Padding Safe Area */
-        .pt-safe { padding-top: max(1.25rem, env(safe-area-inset-top)); }
-        .pb-safe { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
+  <style>
+    :root {
+      --bg: #050811;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        /* Smooth UI transitions */
-        .fade-in {
-            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: #f5f7fb;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
 
-        .pulse-glow {
-            animation: pulseGlow 3s infinite alternate;
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px -3px rgba(37, 99, 235, 0.3); }
-            100% { box-shadow: 0 0 25px 2px rgba(6, 182, 212, 0.5); }
-        }
-    </style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif;
+    }
+
+    /* ---------- Ambient background ---------- */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.5;
+      animation: drift 22s ease-in-out infinite alternate;
+    }
+    .blob-a { width: 60vmax; height: 60vmax; top: -20vmax; left: -18vmax; background: radial-gradient(circle, #1d4ed8 0%, transparent 70%); }
+    .blob-b { width: 55vmax; height: 55vmax; bottom: -22vmax; right: -18vmax; background: radial-gradient(circle, #7c3aed 0%, transparent 70%); animation-delay: -8s; }
+    .blob-c { width: 40vmax; height: 40vmax; top: 40%; left: 30%; background: radial-gradient(circle, #0e7490 0%, transparent 70%); opacity: 0.3; animation-delay: -14s; }
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(40px, -30px, 0) scale(1.12); }
+    }
+
+    /* ---------- Liquid glass ---------- */
+    .glass {
+      position: relative;
+      background: linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03));
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      backdrop-filter: blur(28px) saturate(180%);
+      border-radius: 32px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        inset 0 -1px 0 rgba(255,255,255,0.04),
+        0 24px 60px -24px rgba(0,0,0,0.7);
+    }
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.5), rgba(120,160,255,0.08) 40%, rgba(255,255,255,0.02) 65%, rgba(180,140,255,0.4));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .glass-inner {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+    }
+
+    /* ---------- Options ---------- */
+    .opt {
+      width: 100%;
+      min-height: 68px;
+      padding: 1.1rem 1.25rem;
+      border-radius: 22px;
+      text-align: left;
+      font-size: 1.05rem;
+      line-height: 1.4;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
+                  box-shadow 0.4s var(--ease), transform 0.2s var(--ease), opacity 0.4s var(--ease);
+      transform: translateZ(0);
+    }
+    .opt:active:not(:disabled) { transform: scale(0.97); }
+    .opt .letter {
+      flex: 0 0 auto;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.4s var(--ease);
+    }
+    @media (hover: hover) {
+      .opt:hover:not(:disabled) { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+    }
+    .opt:disabled { cursor: default; }
+    .opt.is-correct {
+      background: rgba(52,211,153,0.14);
+      border-color: rgba(52,211,153,0.75);
+      box-shadow: 0 0 34px -4px rgba(52,211,153,0.6), inset 0 0 22px rgba(52,211,153,0.14);
+    }
+    .opt.is-correct .letter { background: #34d399; color: #04130d; border-color: transparent; }
+    .opt.is-wrong {
+      background: rgba(248,113,113,0.12);
+      border-color: rgba(248,113,113,0.65);
+      box-shadow: 0 0 30px -6px rgba(248,113,113,0.5), inset 0 0 20px rgba(248,113,113,0.1);
+    }
+    .opt.is-wrong .letter { background: #f87171; color: #1a0606; border-color: transparent; }
+    .opt.is-dim { opacity: 0.4; }
+
+    /* ---------- Progress ---------- */
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+      box-shadow: 0 0 18px rgba(167,139,250,0.7);
+      transition: width 0.7s var(--ease);
+      position: relative;
+    }
+    .bar-fill::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0; right: 0;
+      width: 24px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6));
+      filter: blur(2px);
+      opacity: 0.7;
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn-primary {
+      width: 100%;
+      min-height: 66px;
+      border-radius: 22px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 16px 40px -12px rgba(99,102,241,0.7);
+      transition: transform 0.2s var(--ease), opacity 0.4s var(--ease), box-shadow 0.4s var(--ease), filter 0.3s var(--ease);
+    }
+    .btn-primary:active:not(:disabled) { transform: scale(0.97); }
+    .btn-primary:disabled { opacity: 0.35; box-shadow: none; cursor: not-allowed; }
+    @media (hover: hover) {
+      .btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
+    }
+
+    /* ---------- Feedback & entrances ---------- */
+    .fade-up { animation: fadeUp 0.55s var(--ease) both; }
+    .fade-in { animation: fadeIn 0.5s var(--ease) both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px) scale(0.985); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .expl {
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+    .expl.hidden-state { opacity: 0; transform: translateY(10px); pointer-events: none; }
+
+    /* ---------- Result ring ---------- */
+    .ring {
+      --p: 0;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #60a5fa 0%,
+        #a78bfa calc(var(--p) * 0.5%),
+        #f472b6 calc(var(--p) * 1%),
+        rgba(255,255,255,0.08) calc(var(--p) * 1%),
+        rgba(255,255,255,0.08) 100%
+      );
+      box-shadow: 0 0 60px -10px rgba(167,139,250,0.55);
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+    }
+    .ring-in {
+      width: calc(100% - 22px);
+      height: calc(100% - 22px);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #151c33, #070b17 75%);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .glow-ok { text-shadow: 0 0 24px rgba(52,211,153,0.6); }
+    .glow-bad { text-shadow: 0 0 24px rgba(248,113,113,0.55); }
+
+    .safe-top { padding-top: max(env(safe-area-inset-top), 1.25rem); }
+    .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 1.25rem); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
-<body class="h-full flex flex-col font-sans text-slate-100 bg-dark-950 antialiased selection:bg-navy-600 selection:text-white pb-24 md:pb-8">
 
-    <!-- Glowing Background Lights -->
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-navy-800/20 via-navy-600/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
-    <div class="fixed bottom-0 right-0 w-80 h-80 bg-cyan-500/10 blur-3xl pointer-events-none -z-10"></div>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+  </div>
 
-    <!-- Header Section -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 pt-safe">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <!-- App Brand & Title -->
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white text-lg shadow-glow-blue">
-                    <i class="fa-solid fa-tooth"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">Вступ до фаху</h1>
-                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-500/10 text-cyan-400 border border-cyan-500/20">1 Курс</span>
-                    </div>
-                    <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Стоматологічний факультет • Підготовка до заліку</p>
-                </div>
-            </div>
+  <main class="min-h-[100dvh] mx-auto w-full max-w-xl px-5 safe-top safe-bottom flex flex-col">
 
-            <!-- Desktop Navigation Tabs -->
-            <div class="hidden md:flex items-center gap-1 bg-dark-900/90 p-1 rounded-xl border border-slate-800">
-                <button id="desk-nav-study" onclick="switchTab('study')" class="px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-navy-600 text-white shadow-md">
-                    <i class="fa-solid fa-book-open"></i> Карточки знань
-                </button>
-                <button id="desk-nav-quiz" onclick="switchTab('quiz')" class="px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
-                    <i class="fa-solid fa-graduation-cap"></i> Тестування
-                    <span id="desk-quiz-badge" class="px-1.5 py-0.5 text-[10px] bg-cyan-500/20 text-cyan-300 rounded-full font-extrabold">20</span>
-                </button>
-            </div>
+    <!-- Header -->
+    <header class="pt-2 pb-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300/80">Стоматологія · 1 курс</p>
+          <h1 class="mt-1 text-2xl font-bold tracking-tight">Вступ до фаху</h1>
         </div>
+        <div class="glass-inner px-4 py-2 flex items-center gap-2 text-sm font-semibold">
+          <i class="fa-solid fa-star text-amber-300"></i>
+          <span>Бали: <span id="score-live">0</span></span>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <div class="flex items-center justify-between text-sm text-white/60 mb-2">
+          <span id="counter">Питання 1 з 20</span>
+          <span id="percent-live">0%</span>
+        </div>
+        <div class="bar-track">
+          <div id="bar" class="bar-fill"></div>
+        </div>
+      </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-6">
-
-        <!-- ================= STUDY MODE ================= -->
-        <section id="study-section" class="space-y-6 fade-in">
-            
-            <!-- Dashboard Controls & Progress Bar -->
-            <div class="glass-panel rounded-2xl p-4 sm:p-6 shadow-xl space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-cyan-400"></i> Прогрес підготовки
-                        </span>
-                        <h2 class="text-sm sm:text-base font-bold text-slate-200 mt-0.5">Вивчені екзаменаційні питання</h2>
-                    </div>
-                    <span id="mastered-count" class="self-start sm:self-auto text-xs font-extrabold text-cyan-300 bg-cyan-950/80 px-3 py-1 rounded-full border border-cyan-500/30 shadow-inner">
-                        0 з 20 вивчено (0%)
-                    </span>
-                </div>
-                
-                <div class="w-full bg-dark-900 rounded-full h-2.5 overflow-hidden border border-slate-800 p-0.5">
-                    <div id="mastered-progress-bar" class="bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 h-full w-0 transition-all duration-500 rounded-full"></div>
-                </div>
-
-                <!-- Search & Filters -->
-                <div class="pt-2 flex flex-col md:flex-row gap-3">
-                    <div class="relative flex-1">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="study-search" oninput="filterStudyCards()" placeholder="Швидкий пошук (напр. автоклав, 51, зондування, проба)..." 
-                            class="w-full pl-10 pr-4 py-2.5 bg-dark-900/90 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all">
-                    </div>
-                    <select id="category-filter" onchange="filterStudyCards()" class="bg-dark-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 font-medium">
-                        <option value="all">Усі розділи (5)</option>
-                        <option value="anatomy">1. Анатомія та Прорізування</option>
-                        <option value="examination">2. Анамнез та Обстеження</option>
-                        <option value="instruments">3. Інструменти та Бор</option>
-                        <option value="sterilization">4. Дезінфекція та Стерилізація</option>
-                        <option value="occlusion">5. Прикус та Матеріали</option>
-                    </select>
-                </div>
-
-                <!-- Quick Topics Chips -->
-                <div class="flex flex-wrap gap-1.5 items-center pt-1 text-xs">
-                    <span class="text-slate-400 font-medium mr-1 text-[11px]">Фільтр:</span>
-                    <button onclick="quickFilter('тимчасові')" class="bg-dark-850 hover:bg-slate-700 border border-slate-700/60 text-slate-300 px-2.5 py-1 rounded-lg transition">Тимчасові зуби</button>
-                    <button onclick="quickFilter('система')" class="bg-dark-850 hover:bg-slate-700 border border-slate-700/60 text-slate-300 px-2.5 py-1 rounded-lg transition">Формули ISO</button>
-                    <button onclick="quickFilter('проба')" class="bg-dark-850 hover:bg-slate-700 border border-slate-700/60 text-slate-300 px-2.5 py-1 rounded-lg transition">Проби ПСО</button>
-                    <button onclick="quickFilter('прикус')" class="bg-dark-850 hover:bg-slate-700 border border-slate-700/60 text-slate-300 px-2.5 py-1 rounded-lg transition">Прикус</button>
-                    <button onclick="quickFilter('паста')" class="bg-dark-850 hover:bg-slate-700 border border-slate-700/60 text-slate-300 px-2.5 py-1 rounded-lg transition">Пасти</button>
-                    <button onclick="resetFilters()" class="text-cyan-400 hover:text-cyan-300 ml-auto font-semibold underline text-[11px]">Скинути</button>
-                </div>
-            </div>
-
-            <!-- Cards Grid -->
-            <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                <!-- Cards render dynamically -->
-            </div>
-
-            <!-- Empty Search State -->
-            <div id="no-results" class="hidden text-center py-16 glass-panel rounded-2xl border border-dashed border-slate-700">
-                <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-3"></i>
-                <h3 class="text-base font-semibold text-slate-300">Питань не знайдено</h3>
-                <p class="text-xs text-slate-500 mt-1">Змініть пошуковий запит або виберіть іншу категорію</p>
-                <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl shadow-md transition">Скинути пошук</button>
-            </div>
-        </section>
-
-
-        <!-- ================= QUIZ MODE ================= -->
-        <section id="quiz-section" class="hidden max-w-3xl mx-auto space-y-6 fade-in">
-            
-            <!-- Quiz Progress Banner -->
-            <div class="glass-panel rounded-2xl p-4 sm:p-5 shadow-xl flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/40 flex items-center justify-center text-cyan-400 text-base font-black shadow-inner">
-                        <span id="current-question-num">1</span>
-                    </div>
-                    <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Заліковий тест</div>
-                        <div class="text-xs sm:text-sm font-bold text-slate-200">Питання <span id="quiz-step-text">1 з 20</span></div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <div class="text-right">
-                        <span class="text-[10px] text-slate-400 block font-semibold">Вірних відповідей</span>
-                        <span class="text-base sm:text-lg font-black text-cyan-400"><span id="live-score">0</span> / <span id="answered-count">0</span></span>
-                    </div>
-                    <button onclick="restartQuiz()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition" title="Перезапустити">
-                        <i class="fa-solid fa-rotate-right text-base"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Question Card Box -->
-            <div id="quiz-card" class="glass-panel rounded-2xl p-5 sm:p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
-                <!-- Header tag -->
-                <div class="flex items-center justify-between mb-4">
-                    <span id="quiz-category-tag" class="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-950/80 text-cyan-300 border border-blue-500/30">
-                        Категорія
-                    </span>
-                    <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-info text-cyan-400"></i> Обирайте 1 правильний варіант
-                    </span>
-                </div>
-
-                <!-- Question Title -->
-                <h2 id="quiz-question-text" class="text-base sm:text-lg font-bold text-white leading-relaxed mb-6">
-                    Текст питання завантажується...
-                </h2>
-
-                <!-- Options Container -->
-                <div id="quiz-options-container" class="space-y-3">
-                    <!-- Option buttons populated by JS -->
-                </div>
-
-                <!-- Explanation Drawer -->
-                <div id="quiz-feedback" class="hidden mt-6 p-4 rounded-xl border transition-all duration-300">
-                    <div class="flex items-start gap-3">
-                        <div id="feedback-icon" class="text-lg mt-0.5"></div>
-                        <div class="flex-1">
-                            <h4 id="feedback-title" class="font-bold text-xs sm:text-sm mb-1"></h4>
-                            <p id="feedback-text" class="text-xs sm:text-sm leading-relaxed text-slate-300"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Controls -->
-                <div class="mt-8 pt-4 border-t border-slate-800 flex justify-between items-center">
-                    <button id="prev-btn" onclick="navigateQuiz(-1)" class="px-4 py-2 rounded-xl border border-slate-700/80 text-slate-300 hover:bg-slate-800 font-semibold text-xs transition disabled:opacity-30 disabled:cursor-not-allowed">
-                        <i class="fa-solid fa-arrow-left mr-1"></i> Назад
-                    </button>
-                    
-                    <button id="next-btn" onclick="navigateQuiz(1)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-navy-600 hover:from-blue-500 hover:to-navy-500 text-white font-bold text-xs shadow-glow-blue transition flex items-center gap-2">
-                        Наступне <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Quiz Results Dashboard -->
-            <div id="quiz-results" class="hidden glass-panel rounded-2xl p-6 sm:p-10 shadow-2xl text-center space-y-6 fade-in">
-                <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 p-0.5 shadow-glow-cyan">
-                    <div class="w-full h-full bg-dark-950 rounded-[14px] flex items-center justify-center text-cyan-400 text-3xl">
-                        <i class="fa-solid fa-trophy"></i>
-                    </div>
-                </div>
-
-                <div>
-                    <h2 class="text-2xl font-black text-white mb-1">Тестування завершено!</h2>
-                    <p class="text-xs text-slate-400">Результат залікового комплексу з розділу «Вступ до фаху»</p>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
-                    <div class="bg-dark-900/90 p-4 rounded-xl border border-slate-800">
-                        <div class="text-xl sm:text-2xl font-black text-cyan-400" id="res-score">0/20</div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400 mt-1">Правильних</div>
-                    </div>
-                    <div class="bg-dark-900/90 p-4 rounded-xl border border-slate-800">
-                        <div class="text-xl sm:text-2xl font-black text-blue-400" id="res-percent">0%</div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400 mt-1">Успішність</div>
-                    </div>
-                    <div class="bg-dark-900/90 p-4 rounded-xl border border-slate-800">
-                        <div class="text-xl sm:text-2xl font-black" id="res-grade-badge">A</div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400 mt-1">Оцінка</div>
-                    </div>
-                </div>
-
-                <p id="res-message" class="text-xs sm:text-sm font-medium text-slate-300 max-w-md mx-auto leading-relaxed"></p>
-
-                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4 border-t border-slate-800">
-                    <button onclick="restartQuiz()" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-navy-600 hover:from-blue-500 text-white font-bold rounded-xl shadow-glow-blue transition flex items-center justify-center gap-2 text-xs">
-                        <i class="fa-solid fa-rotate-right"></i> Пройти ще раз
-                    </button>
-                    <button onclick="switchTab('study')" class="px-6 py-3 bg-dark-850 hover:bg-slate-700 text-slate-200 font-bold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2 text-xs">
-                        <i class="fa-solid fa-book-open"></i> Повернутися до карточок
-                    </button>
-                </div>
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Mobile Navigation Bar (iPhone / Mobile Optimized) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-slate-800/90 pb-safe">
-        <div class="grid grid-cols-2 h-14">
-            <button id="mob-nav-study" onclick="switchTab('study')" class="flex flex-col items-center justify-center text-cyan-400 font-bold text-[11px] gap-1">
-                <i class="fa-solid fa-book-open text-base"></i>
-                <span>Карточки</span>
-            </button>
-            <button id="mob-nav-quiz" onclick="switchTab('quiz')" class="flex flex-col items-center justify-center text-slate-400 font-semibold text-[11px] gap-1 hover:text-slate-200">
-                <i class="fa-solid fa-graduation-cap text-base"></i>
-                <span>Тестування</span>
-            </button>
+    <!-- Quiz screen -->
+    <section id="screen-quiz" class="flex-1 flex flex-col gap-5 pb-4">
+      <div class="glass p-6 sm:p-8 fade-up" id="question-card">
+        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-violet-300/80 mb-4">
+          <i class="fa-solid fa-tooth"></i>
+          <span id="topic">Тема</span>
         </div>
-    </nav>
+        <h2 id="question" class="text-[1.45rem] sm:text-[1.6rem] leading-snug font-semibold tracking-tight"></h2>
+      </div>
 
-    <!-- Data & Script Logic -->
-    <script>
-        // Data Structure for all 20 exam questions
-        const studyData = [
-            {
-                id: 1,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "1. Будова тимчасових (молочних) зубів",
-                shortAns: "Складаються з коронки, шийки та кореня. Мають тоншу емаль і дентин, об'ємну пульпарну камеру та широко розведені корені.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm leading-relaxed">
-                        <li><b>Анатомічні частини:</b> Коронка, шийка та корінь (менших розмірів, ніж у постійних).</li>
-                        <li><b>Гістологія:</b> Емаль і дентин мають тонший шар (близько 1 мм) та нижчий рівень мінералізації.</li>
-                        <li><b>Пульпарна камера:</b> Відносно велика за об'ємом, роги пульпи розташовані дуже близько до поверхні.</li>
-                        <li><b>Особливості коренів:</b> Корені тимчасових молярів ширше розведені в сторони для розміщення зачатків постійних зубів.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 2,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "2. Будова постійних зубів",
-                shortAns: "Мають виражені анатомічні поверхні, товстий шар високомінералізованої емалі, міцний дентин, цемент кореня та пульпу.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm leading-relaxed">
-                        <li><b>Емаль (Enamelum):</b> Найтвердіша тканина організму (96% неорганічних речовин), покриває коронкову частину.</li>
-                        <li><b>Дентин (Dentinum):</b> Основна маса зуба, пронизана дентинними канальцями.</li>
-                        <li><b>Цемент (Cementum):</b> Покриває корінь зуба та забезпечує його фіксацію у періодонті.</li>
-                        <li><b>Пульпа (Pulpa):</b> Пухка сполучна тканина з нервово-судинним пучком у порожнині зуба.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 3,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "3. Терміни та порядок прорізування тимчасових і постійних зубів",
-                shortAns: "Тимчасові: 6 міс – 2.5 роки (починаючи з нижніх I). Постійні: 5-6 років – 12-13 років (починаючи з перших молярів «шісток»).",
-                fullAns: `
-                    <div class="space-y-3 text-xs sm:text-sm">
-                        <p><b>Тимчасові зуби (6 міс. – 2,5 роки):</b></p>
-                        <ol class="list-decimal pl-5 space-y-1">
-                            <li>6–8 міс. — нижні центральні різці</li>
-                            <li>8–12 міс. — верхні різці</li>
-                            <li>12–16 міс. — перші моляри</li>
-                            <li>16–20 міс. — ікла</li>
-                            <li>20–30 міс. — другі моляри</li>
-                        </ol>
-                        <p class="pt-2"><b>Постійні зуби (з 5–6 років):</b></p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li>5–7 років: Перші моляри («шістьки») та нижні центральні різці</li>
-                            <li>7–9 років: Латеральні різці</li>
-                            <li>9–12 років: Премоляри та ікла</li>
-                            <li>11–13 років: Другі моляри</li>
-                            <li>17–25+ років: Треті моляри (зуби мудрості)</li>
-                        </ul>
-                    </div>
-                `
-            },
-            {
-                id: 4,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "4. Терміни та порядок прорізування тимчасових зубів",
-                shortAns: "Всього 20 зубів (по 10 на щелепу). Порядок: Різці I -> Різці II -> Моляри I -> Ікла -> Моляри II.",
-                fullAns: `
-                    <p class="text-xs sm:text-sm mb-2">Прорізування підпорядковується принципам парності, послідовності та симетричності.</p>
-                    <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                        <li><b>Загальна кількість:</b> 20 тимчасових зубів (премоляри у тимчасовому прикусі відсутні).</li>
-                        <li><b>6–8 міс:</b> Нижні медіальні різці (і1).</li>
-                        <li><b>8–12 міс:</b> Верхні та нижні латеральні різці (і2).</li>
-                        <li><b>12–16 міс:</b> Перші моляри (m1).</li>
-                        <li><b>16–20 міс:</b> Ікла (c).</li>
-                        <li><b>20–30 міс:</b> Другі моляри (m2).</li>
-                    </ul>
-                `
-            },
-            {
-                id: 5,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "5. Анатомічні відмінності тимчасових зубів від постійних",
-                shortAns: "Менші розміри, білувато-блакитний колір, виражений емалевий валик у шийки, ширші корені, тонша емаль.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Колір:</b> Блакитно-білий відтінок емалі (у постійних — жовтуватий).</li>
-                        <li><b>Форма:</b> Більш куляста коронка з вираженим емалевим валиком біля шийки.</li>
-                        <li><b>Тверді тканини:</b> Товщина емалі та дентину майже у 2 рази менша.</li>
-                        <li><b>Корені:</b> Більш тонкі, довгі та розведені у боки.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 6,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "6. Формула зубів за різними системами (Клінічна, ISO 3950)",
-                shortAns: "Клінічна: римські (I-V) та арабські (1-8). ISO 3950: двозначна (постійні 1-4 квадранти, тимчасові 5-8 квадранти).",
-                fullAns: `
-                    <div class="space-y-3 text-xs sm:text-sm">
-                        <div>
-                            <b>Система ISO 3950:</b>
-                            <ul class="list-disc pl-5 mt-1">
-                                <li><i>Постійні:</i> Квадранти 1 (верхній правий), 2 (верхній лівий), 3 (нижній лівий), 4 (нижній правий). Наприклад, <b>11</b> — верхній правий центральний різець.</li>
-                                <li><i>Тимчасові:</i> Квадранти 5, 6, 7, 8. Наприклад, <b>51</b> — тимчасовий верхній правий центральний різець.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <b>Клінічна система:</b>
-                            <p class="mt-1">Використовує сітку. Постійні позначаються 1–8, тимчасові — римськими цифрами I–V.</p>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                id: 7,
-                category: "anatomy",
-                categoryName: "Анатомія та Прорізування",
-                title: "7. Поняття фізіологічної стертості тимчасових зубів",
-                shortAns: "Нормальний процес стирання горбків та ріжучих країв до 5-6 років для гармонійного росту щелеп та зміни прикусу.",
-                fullAns: `
-                    <p class="text-xs sm:text-sm leading-relaxed mb-2"><b>Фізіологічна стертість</b> — це природне зношування горбків та ріжучих країв тимчасових зубів під час жування.</p>
-                    <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                        <li>Починається у віці 3.5–4 років.</li>
-                        <li>Сприяє безперешкодному росту щелепних кісток.</li>
-                        <li>Розблоковує рухи нижньої щелепи у суглобі (СНЩС).</li>
-                    </ul>
-                `
-            },
-            {
-                id: 8,
-                category: "examination",
-                categoryName: "Анамнез та Обстеження",
-                title: "8. Схема збору анамнезу життя та захворювання дитини",
-                shortAns: "Збирається за участю батьків: скарги -> Anamnesis morbi (розвиток хвороби) -> Anamnesis vitae (перебіг вагітності, вигодовування, алергії).",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Скарги:</b> Зі слів батьків та дитини.</li>
-                        <li><b>Anamnesis morbi:</b> Початок симптомів, перебіг захворювання, попереднє лікування.</li>
-                        <li><b>Anamnesis vitae:</b>
-                            <ul class="list-circle pl-4 mt-1 space-y-1">
-                                <li>Перебіг вагітності та пологів у матері.</li>
-                                <li>Тип вигодовування (грудне/штучне).</li>
-                                <li>Терміни прорізування перших зубів.</li>
-                                <li>Алергологічний анамнез (реакції на медикаменти).</li>
-                            </ul>
-                        </li>
-                    </ul>
-                `
-            },
-            {
-                id: 9,
-                category: "examination",
-                categoryName: "Анамнез та Обстеження",
-                title: "9. Схема збору анамнезу життя та захворювання дорослої людини",
-                shortAns: "Скарги -> Історія хвороби -> Супутні патології (серце, діабет, ВІЛ, гепатити) -> Алергологічний та професійний анамнез.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Скарги:</b> Характер болю (гострий, нічний, прикушування), локалізація.</li>
-                        <li><b>Anamnesis morbi:</b> Коли з'явився біль, динаміка розвитку, ефективність анальгетиків.</li>
-                        <li><b>Anamnesis vitae:</b>
-                            <ul class="list-circle pl-4 mt-1 space-y-1">
-                                <li>Супутні захворювання (гіпертонія, цукровий діабет, гепатити).</li>
-                                <li>Переносимість місцевих анестетиків (алергічні проби).</li>
-                                <li>Шкідливі звички (паління, бруксизм).</li>
-                            </ul>
-                        </li>
-                    </ul>
-                `
-            },
-            {
-                id: 10,
-                category: "examination",
-                categoryName: "Анамнез та Обстеження",
-                title: "10. Зовнішній огляд обличчя, прикус, м'які тканини та лімфовузли",
-                shortAns: "Оцінка симетрії обличчя, носогубних складок, стану червоної облямівки губ, пальпація підщелепних та шийних лімфовузлів.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Огляд обличчя:</b> Оцінка симетричності, пропорційності третин обличчя, стану губ та куточків рота.</li>
-                        <li><b>Пальпація лімфовузлів:</b> Підщелепні, підборідні, шийні. В нормі — м'які, рухливі, безболісні.</li>
-                        <li><b>СНЩС:</b> Оцінка плавності відкривання рота, наявність клацання чи болю в суглобі.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 11,
-                category: "examination",
-                categoryName: "Анамнез та Обстеження",
-                title: "11. Обстеження порожнини рота: огляд, зондування, перкусія, пальпація",
-                shortAns: "Огляд (дзеркало) -> Зондування (глибина, біль дна) -> Перкусія (вертикальна/горизонтальна) -> Пальпація ясен.",
-                fullAns: `
-                    <div class="space-y-2 text-xs sm:text-sm">
-                        <p><b>1. Огляд:</b> Дзеркалом перевіряють стан емалі, дефекти зубних рядів, слизову оболонку.</p>
-                        <p><b>2. Зондування:</b> Зондом вивчають глибину каріозної порожнини, болючість дна та стан фісур.</p>
-                        <p><b>3. Перкусія:</b>
-                            <ul class="list-disc pl-4">
-                                <li><i>Вертикальна:</i> Постукування вздовж осі зуба (вказує на періодонтит).</li>
-                                <li><i>Горизонтальна:</i> Постукування збоку (вказує на ураження пародонта).</li>
-                            </ul>
-                        </p>
-                        <p><b>4. Пальпація:</b> Обмацування альвеолярного відростка для виявлення інфільтрату чи флюктуації.</p>
-                    </div>
-                `
-            },
-            {
-                id: 12,
-                category: "instruments",
-                categoryName: "Інструменти та Бор",
-                title: "12. Класифікація стоматологічних інструментів",
-                shortAns: "Оглядові (дзеркало, зонд, пінцет); Для препарування (екскаватори, бори); Для пломбування (шпатель, гладилка, штопфер).",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Оглядові:</b> Дзеркало (огляд та підсвічування), зонд (дослідження тканин), пінцет (внесення ватних валиків).</li>
-                        <li><b>Для препарування:</b> Екскаватори (видалення розм'якшеного дентину), бори.</li>
-                        <li><b>Для пломбування:</b> Шпателі (замішування), гладилки (моделювання), штопфери (ущільнення пломби).</li>
-                    </ul>
-                `
-            },
-            {
-                id: 13,
-                category: "instruments",
-                categoryName: "Інструменти та Бор",
-                title: "13. Види стоматологічних наконечників і борів",
-                shortAns: "Наконечники: Турбінні (300-400 тис. об/хв), Кутові та Прямі (мікромоторні). Бори: Алмазні, твердосплавні (кулясті, конусні, фісурні).",
-                fullAns: `
-                    <div class="space-y-3 text-xs sm:text-sm">
-                        <div>
-                            <b>Наконечники:</b>
-                            <ul class="list-disc pl-5 mt-1">
-                                <li><b>Турбінний:</b> Високошвидкісний (300 000–400 000 об/хв), вимагає водяного охолодження.</li>
-                                <li><b>Кутовий:</b> Низькошвидкісний (10 000–40 000 об/хв) для видалення дентину та полірування.</li>
-                                <li><b>Прямий:</b> Для ортопедичних та лаборатоних робіт.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <b>Бори:</b>
-                            <ul class="list-disc pl-5 mt-1">
-                                <li><i>Матеріал:</i> Алмазні (для емалі), твердосплавні (для дентину).</li>
-                                <li><i>Форма:</i> Кулясті, фісурні, конусоподібні, полум'яподібні.</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                id: 14,
-                category: "sterilization",
-                categoryName: "Дезінфекція та Стерилізація",
-                title: "14. Етапи обробки стоматологічного інструментарію",
-                shortAns: "Строгий порядок 3 етапів: 1. Дезінфекція -> 2. Передстерилізаційне очищення (ПСО) -> 3. Стерилізація.",
-                fullAns: `
-                    <ol class="list-decimal pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>1. Дезінфекція:</b> Занурення інструментів у дезрозчин одразу після використання.</li>
-                        <li><b>2. ПСО (Передстерилізаційне очищення):</b> Видалення жирових і білкових забруднень (ручне або ультразвукове). Обов'язковий контроль пробами!</li>
-                        <li><b>3. Стерилізація:</b> Знищення всіх мікроорганізмів та їх спор.</li>
-                    </ol>
-                `
-            },
-            {
-                id: 15,
-                category: "sterilization",
-                categoryName: "Дезінфекція та Стерилізація",
-                title: "15. Контроль якості ПСО (Азопірамова та Фенолфталеїнова проби)",
-                shortAns: "Азопірамова — перевірка на залишки крові (фіолетове/рожеве забарвлення). Фенолфталеїнова — на залишки мийних засобів (рожеве забарвлення).",
-                fullAns: `
-                    <div class="space-y-3 text-xs sm:text-sm">
-                        <div class="p-3 bg-blue-950/60 rounded-xl border border-blue-500/30">
-                            <b class="text-cyan-300">Азопірамова проба (контроль на кров):</b>
-                            <p class="mt-1">При наявності слідів крові з'являється <b>синьо-фіолетове забарвлення</b> протягом 1 хвилини.</p>
-                        </div>
-                        <div class="p-3 bg-rose-950/40 rounded-xl border border-rose-500/30">
-                            <b class="text-rose-300">Фенолфталеїнова проба (контроль на луг/миючі засоби):</b>
-                            <p class="mt-1">При наявності миючого засобу з'являється <b>рожево-малинове забарвлення</b>.</p>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                id: 16,
-                category: "sterilization",
-                categoryName: "Дезінфекція та Стерилізація",
-                title: "16. Сучасні методи стерилізації (Автоклав, Сухожар)",
-                shortAns: "Автоклавування: насичена пара під тиском (121-134°C). Сухожарова шафа: гаряче сухе повітря (160-180°C).",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Автоклавування (паровий метод):</b> Водяна пара під тиском. Режими: 134°C (2 атм, 5 хв) або 121°C (1.1 атм, 20 хв). Ефективний і щадний метод.</li>
-                        <li><b>Сухожарова шафа (повітряний метод):</b> Сухе гаряче повітря. Режими: 180°C (60 хв) або 160°C (150 хв).</li>
-                        <li><b>Глассперленовий стерилізатор:</b> Стерилізація дрібних металевих інструментів у розпечених скляних кульках (20-30 сек).</li>
-                    </ul>
-                `
-            },
-            {
-                id: 17,
-                category: "occlusion",
-                categoryName: "Прикус та Матеріали",
-                title: "17. Види фізіологічних прикусів",
-                shortAns: "Ортогнатичний (еталон), Прогенічний, Опістогнатичний, Біпрогнатичний, Прямий.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Ортогнатичний:</b> Еталон. Верхні різці перекривають нижні на 1/3 висоти коронки.</li>
-                        <li><b>Прямий:</b> Ріжучі краї передніх зубів контактують «край у край».</li>
-                        <li><b>Фізіологічна прогенія:</b> Нижня щелепа злегка висунута вперед при збереженні контактів.</li>
-                        <li><b>Біпрогнатичний:</b> Нахил зубів обох щелеп уперед.</li>
-                        <li><b>Опістогнатичний:</b> Нахил передніх зубів обох щелеп назад (орально).</li>
-                    </ul>
-                `
-            },
-            {
-                id: 18,
-                category: "occlusion",
-                categoryName: "Прикус та Матеріали",
-                title: "18. Види патологічних прикусів",
-                shortAns: "Дистальний (прогнатія), Мезіальний (прогенія), Глибокий, Відкритий, Перехресний.",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Дистальний (прогнатія):</b> Верхня щелепа значно виступає вперед відносно нижньої.</li>
-                        <li><b>Мезіальний (прогенія):</b> Нижня щелепа виступає вперед, нижні різці перекривають верхні.</li>
-                        <li><b>Глибокий:</b> Верхні різці перекривають нижні більше ніж на 1/2 коронки.</li>
-                        <li><b>Відкритий:</b> Наявність щілини між зубами при змиканні щелеп.</li>
-                        <li><b>Перехресний:</b> Невідповідність ширин щелеп з перехрещенням зубних рядів.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 19,
-                category: "occlusion",
-                categoryName: "Прикус та Матеріали",
-                title: "19. Класифікація стоматологічних матеріалів",
-                shortAns: "Пломбувальні (композити, цементи), Допоміжні (відбиткові маси, воски), Конструкційні (кераміка, сплави).",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Пломбувальні:</b> Композити світлового затвердіння, склоіономірні цементи (СІЦ), амальгама, тимчасові пасти.</li>
-                        <li><b>Допоміжні:</b> Відбиткові маси (силіконові, альгінатні), воски, полірувальні пасти.</li>
-                        <li><b>Конструкційні:</b> Металеві сплави, кераміка, акрилові пластмаси.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 20,
-                category: "occlusion",
-                categoryName: "Прикус та Матеріали",
-                title: "20. Класифікація зубних паст",
-                shortAns: "Гігієнічні (лише очищення); Лікувально-профілактичні (протикаріозні, протизапальні, десенситивні, відбілюючі).",
-                fullAns: `
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                        <li><b>Гігієнічні:</b> Лише механічне очищення від нальоту та освіження подиху.</li>
-                        <li><b>Лікувально-профілактичні:</b>
-                            <ul class="list-circle pl-4 mt-1 space-y-1">
-                                <li><b>Протикаріозні:</b> Містять сполуки Фтору (Sodium Fluoride) та Кальцію.</li>
-                                <li><b>Протизапальні:</b> З екстрактами трав або хлоргексидином.</li>
-                                <li><b>Десенситивні:</b> Зменшують чутливість зубів (з нітратом калію).</li>
-                                <li><b>Відбілюючі:</b> З підвищеною абразивністю (RDA) або ферментами.</li>
-                            </ul>
-                        </li>
-                    </ul>
-                `
-            }
-        ];
+      <div id="options" class="flex flex-col gap-3"></div>
 
-        // Quiz Questions Data (20 Multiple Choice Questions)
-        const quizData = [
-            {
-                id: 1,
-                question: "Яка головна анатомо-гістологічна особливість пульпарної камери тимчасового зуба?",
-                options: [
-                    "Відносно великий об'єм камери та близьке розташування рогів пульпи",
-                    "Повна відсутність пульпи та судин",
-                    "Надзвичайно товстий шар дентину",
-                    "Зрощення пульпарної камери з цементом кореня"
-                ],
-                correct: 0,
-                explanation: "Тимчасові зуби мають велику пульпарну камеру, а роги пульпи розташовані близько до поверхні, що вимагає високої обережності при препаруванні."
-            },
-            {
-                id: 2,
-                question: "Яка тканина постійного зуба є найтвердішою в організмі людини?",
-                options: ["Дентин", "Емаль", "Цемент кореня", "Пульпа"],
-                correct: 1,
-                explanation: "Емаль — найтвердіша тканина в організмі людини, яка містить до 96% неорганічних речовин."
-            },
-            {
-                id: 3,
-                question: "В якому віці у дитини зазвичай прорізуються перші постійні зуби («шістьки»)?",
-                options: ["В 2-3 роки", "В 5-7 років", "В 9-10 років", "В 12-14 років"],
-                correct: 1,
-                explanation: "Перші постійні моляри («шістьки») прорізуються у віці 5-7 років позаду тимчасового зубного ряду."
-            },
-            {
-                id: 4,
-                question: "Яка загальна кількість тимчасових (молочних) зубів має прорізатися у дитини в нормі?",
-                options: ["16 зубів", "20 зубів", "28 зубів", "32 зуби"],
-                correct: 1,
-                explanation: "У тимчасовому прикусі прорізується 20 зубів. Премоляри у дитячому прикусі відсутні."
-            },
-            {
-                id: 5,
-                question: "Який відтінок кольору емалі характерний для тимчасових зубів?",
-                options: ["Яскраво-жовтий", "Білувато-блакитний («молочний»)", "Сіро-коричневий", "Янтарний"],
-                correct: 1,
-                explanation: "Тимчасові зуби мають характерний білувато-блакитний відтінок емалі."
-            },
-            {
-                id: 6,
-                question: "Як за системою ISO 3950 позначається тимчасовий верхній правий центральний різець?",
-                options: ["11", "51", "61", "81"],
-                correct: 1,
-                explanation: "Тимчасові квадранти нумеруються від 5 до 8. Верхній правий — 5, центральний різець — 1 (код 51)."
-            },
-            {
-                id: 7,
-                question: "Яку біологічну роль відіграє фізіологічна стертість тимчасових зубів після 3.5-4 років?",
-                options: [
-                    "Сприяє росту щелеп та безперешкодній зміні прикусу",
-                    "Призводить до обов'язкового видалення зубів",
-                    "Є патологією мінералізації",
-                    "Не має жодного значення"
-                ],
-                correct: 0,
-                explanation: "Стирання горбків тимчасових зубів розблоковує рухи нижньої щелепи та сприяє росту щелепних кісток."
-            },
-            {
-                id: 8,
-                question: "Що з перерахованого належить до Anamnesis Vitae при обстеженні дитини?",
-                options: [
-                    "Скарги на біль під час їжі",
-                    "Перебіг вагітності матері та тип вигодовування",
-                    "Глибина каріозної порожнини",
-                    "Колір слизової оболонки"
-                ],
-                correct: 1,
-                explanation: "Анамнез життя дитини охоплює відомості про вагітність матері, пологи та вигодовування."
-            },
-            {
-                id: 9,
-                question: "Збирання якого анамнезу обов'язкове для запобігання анафілактичному шоку перед анестезією?",
-                options: ["Алергологічного анамнезу", "Термінів прорізування зубів", "Генетики кольору очей", "Типу дитячого харчування"],
-                correct: 0,
-                explanation: "Алергологічний анамнез дозволяє виявити непереносимість місцевих анестетиків та запобігти алергічним ускладненням."
-            },
-            {
-                id: 10,
-                question: "Якими в нормі мають бути підщелепні лімфатичні вузли при пальпації?",
-                options: [
-                    "Щільні та болючі",
-                    "Збільшені та нерухомі",
-                    "М'які, рухливі та безболісні",
-                    "Хрящової щільності"
-                ],
-                correct: 2,
-                explanation: "Здорові лімфатичні вузли є м'якоеластичними, рухливими та безболісними при пальпації."
-            },
-            {
-                id: 11,
-                question: "Позитивна вертикальна перкусія зуба свідчить про запалення в яких тканинах?",
-                options: ["У пульпі", "У верхівковому періодонті", "В емалі", "У слизовій щоки"],
-                correct: 1,
-                explanation: "Вертикальна перкусія передає імпульс уздовж кореня; болючість вказує на верхівковий періодонтит."
-            },
-            {
-                id: 12,
-                question: "До якої групи стоматологічних інструментів належит екскаватор?",
-                options: ["До оглядових", "До інструментів для препарування", "До інструментів для пломбування", "До ендодонтичних"],
-                correct: 1,
-                explanation: "Стоматологічний екскаватор призначений для вишкрібання розм'якшеного дентину (препарування)."
-            },
-            {
-                id: 13,
-                question: "Яку швидкість обертів розвиває турбінний стоматологічний наконечник?",
-                options: ["1 000 – 5 000 об/хв", "10 000 – 40 000 об/хв", "300 000 – 400 000 об/хв", "Понад 1 000 000 об/хв"],
-                correct: 2,
-                explanation: "Турбінні наконечники розганяються до 300 000–400 000 об/хв і вимагають обов'язкового водяного охолодження."
-            },
-            {
-                id: 14,
-                question: "Вказати правильну послідовність етапів обробки стоматологічного інструментарію:",
-                options: [
-                    "Стерилізація -> Дезінфекція -> ПСО",
-                    "Дезінфекція -> Передстерилізаційне очищення (ПСО) -> Стерилізація",
-                    "ПСО -> Стерилізація -> Дезінфекція",
-                    "Промивання -> Стерилізація -> Дезінфекція"
-                ],
-                correct: 1,
-                explanation: "Суворий порядок: спочатку дезінфекція у розчині, потім передстерилізаційне очищення (ПСО), і в кінці — стерилізація."
-            },
-            {
-                id: 15,
-                question: "Яке забарвлення при азопірамовій пробі свідчить про наявність залишкових слідів крові?",
-                options: ["Синьо-фіолетове", "Яскраво-жовте", "Червоно-малинове", "Зелене"],
-                correct: 0,
-                explanation: "При взаємодії з гемоглобіном азопірам дає синьо-фіолетове забарвлення протягом 1 хвилини."
-            },
-            {
-                id: 16,
-                question: "Який діючий чинник використовується для стерилізації в автоклаві?",
-                options: ["Сухе гаряче повітря 180°C", "Насичена водяна пара під тиском", "Ультрафіолет", "Розчин перекису водню"],
-                correct: 1,
-                explanation: "Автоклавування — це паровий метод стерилізації водяною парою під тиском."
-            },
-            {
-                id: 17,
-                question: "Який тип прикусу вважається еталоном нормального фізіологічного співвідношення?",
-                options: ["Мезіальний", "Ортогнатичний", "Відкритий", "Дистальний"],
-                correct: 1,
-                explanation: "Ортогнатичний прикус є ідеальним фізіологічним прикусом зі змиканням верхніх зубів над нижніми на 1/3."
-            },
-            {
-                id: 18,
-                question: "Для якого патологічного прикусу характерна наявність вертикальної щілини між передніми зубами?",
-                options: ["Відкритий прикус", "Глибокий прикус", "Ортогнатичний прикус", "Прямий прикус"],
-                correct: 0,
-                explanation: "При відкритому прикусі зуби передньої або бічної ділянки не змикаються, залишаючи щілину."
-            },
-            {
-                id: 19,
-                question: "До якої групи стоматологічних матеріалів належать відбиткові маси (силіконові, альгінатні)?",
-                options: ["Пломбувальні", "Допоміжні матеріали", "Конструкційні", "Лікувальні"],
-                correct: 1,
-                explanation: "Відбиткові маси, воски та абразивні матеріали є допоміжними стоматологічними матеріалами."
-            },
-            {
-                id: 20,
-                question: "Які речовини входять до складу протикаріозних зубних паст?",
-                options: ["Хлоргексидин", "Сполуки Фтору (Sodium Fluoride) та Кальцію", "Пероксид водню", "Спирт"],
-                correct: 1,
-                explanation: "Протикаріозні пасти містять фториди або кальцій для ремінералізації емалі зубів."
-            }
-        ];
+      <div id="feedback" class="glass-inner p-5 expl hidden-state hidden">
+        <div class="flex items-start gap-3">
+          <i id="fb-icon" class="text-2xl mt-0.5"></i>
+          <div class="min-w-0">
+            <p id="fb-title" class="text-lg font-bold mb-1"></p>
+            <p id="fb-text" class="text-[0.98rem] leading-relaxed text-white/80"></p>
+          </div>
+        </div>
+      </div>
 
-        // App State
-        let masteredCards = JSON.parse(localStorage.getItem('stomat_mastered_dark') || '[]');
-        let currentQuizIndex = 0;
-        let quizAnswers = new Array(quizData.length).fill(null);
+      <div class="mt-auto pt-2">
+        <button id="next" class="btn-primary flex items-center justify-center gap-3" disabled>
+          <span id="next-label">Наступне питання</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <p class="text-center text-xs text-white/35 mt-4 px-4 leading-relaxed">
+          Варіанти та пояснення складено за стандартними підручниками. Для фінальної перевірки звіряйтеся з лекціями кафедри.
+        </p>
+      </div>
+    </section>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderStudyCards(studyData);
-            updateMasteredProgress();
-            loadQuizQuestion(0);
-        });
+    <!-- Result screen -->
+    <section id="screen-result" class="hidden flex-1 flex flex-col justify-center gap-6 py-6">
+      <div class="glass p-7 sm:p-9 text-center fade-up">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300/80">Підсумок</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight">Результат тесту</h2>
 
-        // Tab Navigation
-        function switchTab(tab) {
-            const studySec = document.getElementById('study-section');
-            const quizSec = document.getElementById('quiz-section');
-            
-            const deskNavStudy = document.getElementById('desk-nav-study');
-            const deskNavQuiz = document.getElementById('desk-nav-quiz');
-            const mobNavStudy = document.getElementById('mob-nav-study');
-            const mobNavQuiz = document.getElementById('mob-nav-quiz');
+        <div class="mt-8">
+          <div id="ring" class="ring">
+            <div class="ring-in">
+              <div>
+                <div id="result-percent" class="text-6xl font-bold tracking-tight">0%</div>
+                <div class="text-sm text-white/55 mt-1">правильних</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            if (tab === 'study') {
-                studySec.classList.remove('hidden');
-                quizSec.classList.add('hidden');
-                
-                deskNavStudy.className = "px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-navy-600 text-white shadow-md";
-                deskNavQuiz.className = "px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
+        <div class="grid grid-cols-2 gap-3 mt-8">
+          <div class="glass-inner p-4">
+            <p class="text-xs uppercase tracking-widest text-white/50">Бали</p>
+            <p class="mt-1 text-2xl font-bold"><span id="result-points">0</span><span class="text-white/40 text-base"> / 20</span></p>
+          </div>
+          <div class="glass-inner p-4">
+            <p class="text-xs uppercase tracking-widest text-white/50">Помилок</p>
+            <p class="mt-1 text-2xl font-bold"><span id="result-wrong">0</span></p>
+          </div>
+        </div>
 
-                mobNavStudy.className = "flex flex-col items-center justify-center text-cyan-400 font-bold text-[11px] gap-1";
-                mobNavQuiz.className = "flex flex-col items-center justify-center text-slate-400 font-semibold text-[11px] gap-1 hover:text-slate-200";
-            } else {
-                studySec.classList.add('hidden');
-                quizSec.classList.remove('hidden');
+        <p id="result-message" class="mt-7 text-lg leading-relaxed text-white/85"></p>
+      </div>
 
-                deskNavQuiz.className = "px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-navy-600 text-white shadow-md";
-                deskNavStudy.className = "px-5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
+      <button id="restart" class="btn-primary flex items-center justify-center gap-3">
+        <i class="fa-solid fa-rotate-left"></i>
+        <span>Пройти знову</span>
+      </button>
+    </section>
+  </main>
 
-                mobNavQuiz.className = "flex flex-col items-center justify-center text-cyan-400 font-bold text-[11px] gap-1";
-                mobNavStudy.className = "flex flex-col items-center justify-center text-slate-400 font-semibold text-[11px] gap-1 hover:text-slate-200";
-            }
-        }
+<script>
+/* ==========================================================
+   ДАНІ: 20 питань до заліку з «Вступ до фаху»
+   o  — варіанти відповідей
+   a  — індекс правильної відповіді у масиві o
+   e  — пояснення клінічної норми
+   ========================================================== */
+const QUESTIONS = [
+  {
+    t: "Будова зубів",
+    q: "Яка будова тимчасових (молочних) зубів є характерною?",
+    o: [
+      "Всього 32 зуби; емаль товща, ніж у постійних",
+      "Всього 20 зубів; емаль і дентин тонші, пульпова камера відносно велика",
+      "Всього 28 зубів; коронки довші за постійні",
+      "Всього 20 зубів; корені відсутні"
+    ],
+    a: 1,
+    e: "У тимчасовому прикусі 20 зубів (по 10 на кожній щелепі). Емаль і дентин тонші, ніж у постійних, тому карієс поширюється швидко. Пульпова камера відносно велика, а корені тонші й розходяться в сторони."
+  },
+  {
+    t: "Будова зубів",
+    q: "Скільки постійних зубів і з яких груп складається повний постійний прикус?",
+    o: [
+      "28: 8 різців, 4 ікла, 8 премолярів, 8 молярів",
+      "32: 8 різців, 4 ікла, 8 премолярів, 12 молярів",
+      "32: 4 різці, 4 ікла, 12 премолярів, 12 молярів",
+      "30: 8 різців, 4 ікла, 6 премолярів, 12 молярів"
+    ],
+    a: 1,
+    e: "Постійних зубів 32: 8 різців, 4 ікла, 8 премолярів і 12 молярів. До молярів входять треті молярі («зуби мудрості»). Без них постійних зубів 28."
+  },
+  {
+    t: "Прорізування",
+    q: "Які загальні терміни прорізування тимчасових і постійних зубів?",
+    o: [
+      "Тимчасові — з 6 міс. до 2,5–3 років; постійні — починаючи з 6 років",
+      "Тимчасові — з 1 до 5 років; постійні — з 12 років",
+      "Тимчасові — з 3 міс. до 1 року; постійні — з 3 років",
+      "Тимчасові — з 2 до 4 років; постійні — з 10 років"
+    ],
+    a: 0,
+    e: "Тимчасові зуби з’являються приблизно з 6 місяців і завершують прорізування до 2,5–3 років. Постійні починають прорізуватися з першими молярами у 6 років, а основна частина прорізується до 12–13 років. Треті молярі з’являються пізніше, часто після 17 років."
+  },
+  {
+    t: "Прорізування",
+    q: "Яка правильна послідовність прорізування тимчасових зубів?",
+    o: [
+      "Ікла → другі молари → різці → перші молари",
+      "Різці → перші молари → ікла → другі молари",
+      "Перші молари → різці → другі молари → ікла",
+      "Різці → ікла → другі молари → перші молари"
+    ],
+    a: 1,
+    e: "Спочатку прорізуються центральні та бокові різці (приблизно з 6 міс. до 1 року), потім перші молари (близько 13–19 міс.), далі ікла (близько 16–22 міс.) і наостанок другі молари (близько 20–30 міс.)."
+  },
+  {
+    t: "Анатомія зубів",
+    q: "Які анатомічні відмінності тимчасових зубів від постійних?",
+    o: [
+      "Більші розміри, темніша емаль, довші корені, вужча пульпова камера",
+      "Менші розміри, світліша емаль, короткі товсті корені, мала пульпова камера",
+      "Менші розміри, світліша й тонша емаль, більша пульпова камера, тонші корені, що розходяться",
+      "Однакові розміри, тонкі коронки і високі шийки"
+    ],
+    a: 2,
+    e: "Тимчасові зуби менші й світліші, мають тонший шар емалі та більшу пульпову камеру. Корені тонші й довші відносно коронки та розходяться, що полегшує заміну постійними зубами. Шийка тимчасових зубів виражена сильніше."
+  },
+  {
+    t: "Формула зубів",
+    q: "Які позначення використовують клінічна (Палмера) та міжнародна (FDI) системи?",
+    o: [
+      "Клінічна: символ квадранта і номер від центру; міжнародна: двозначні числа 11–48",
+      "Клінічна: двозначні числа 11–48; міжнародна: символ квадранта і номер",
+      "Обидві системи використовують лише числа від 1 до 32",
+      "Клінічна: числа 1–32; міжнародна: літери від A до T"
+    ],
+    a: 0,
+    e: "Клінічна (Палмера) система позначає квадрант символом (┘, └, ┌, ┐) і номер зуба від центру (1–8). Міжнародна FDI система використовує двозначне число: перша цифра — квадрант (1–4 для постійних, 5–8 для тимчасових), друга — порядковий номер (наприклад, 16 або 55)."
+  },
+  {
+    t: "Фізіологія",
+    q: "Що таке фізіологічна стертість тимчасових зубів?",
+    o: [
+      "Патологічне руйнування емалі внаслідок карієсу",
+      "Природне стирання жувальних поверхонь, яке є нормою і не потребує лікування",
+      "Клиноподібний дефект шийки зуба",
+      "Гіперчутливість дентину після прорізування"
+    ],
+    a: 1,
+    e: "Фізіологічна стертість — природне стирання жувальних поверхонь у процесі функціонування. Вона сприяє формуванню щільних контактів між зубами та не потребує лікування. Патологічна стертість, наприклад через бруксизм, уже є відхиленням від норми."
+  },
+  {
+    t: "Анамнез",
+    q: "Які розділи входять до схеми збору анамнезу життя та захворювання дитини?",
+    o: [
+      "Лише скарги та вік дитини",
+      "Скарги, анамнез захворювання, анамнез життя: вагітність і пологи матері, вигодовування, перенесені хвороби, алергія",
+      "Тільки шкідливі звички та заняття спортом",
+      "Лише перелік стоматологічних втручань"
+    ],
+    a: 1,
+    e: "Схема включає паспортні дані, скарги, анамнез захворювання та анамнез життя. Для дитини важливі вагітність і пологи матері, вигодовування, перенесені захворювання, алергологічний і лікарський анамнез, а також фізичний і психічний розвиток, харчування та гігієна."
+  },
+  {
+    t: "Анамнез",
+    q: "Який акцент має анамнез дорослої людини порівняно з дитячим?",
+    o: [
+      "Анамнез життя не збирають",
+      "Шкідливі звички, професійні шкідливості, соматичні захворювання, прийом ліків і алергія",
+      "Дані збирають лише від родичів",
+      "Відомості про вагітність матері"
+    ],
+    a: 1,
+    e: "Для дорослих збирають паспортні дані, скарги, анамнез захворювання та анамнез життя. Особливо важливі соматичні захворювання, алергічні реакції, прийом препаратів (зокрема антикоагулянтів і бісфосфонатів), шкідливі звички, професійні шкідливості, гігієна порожнини рота та для жінок — вагітність."
+  },
+  {
+    t: "Обстеження",
+    q: "Що входить до зовнішнього огляду обличчя?",
+    o: [
+      "Лише визначення кольору шкіри",
+      "Тільки огляд губ і кутів рота",
+      "Оцінка симетрії, профілю й пропорцій обличчя, стану шкіри та м’яких тканин, пальпація регіонарних лімфовузлів і визначення типу прикусу",
+      "Перкусія верхніх різців"
+    ],
+    a: 2,
+    e: "Огляд починають з оцінки симетрії, пропорцій і профілю обличчя, стану шкіри та м’яких тканин. Далі пальпують регіонарні лімфатичні вузли (підщелепні, підборідні, привушні, шийні). Орієнтовний тип прикусу оцінюють за співвідношенням губ і нижньої третини обличчя."
+  },
+  {
+    t: "Обстеження",
+    q: "Які методи входять до обстеження порожнини рота?",
+    o: [
+      "Огляд, перкусія, рентгенографія",
+      "Огляд, зондування, перкусія, пальпація",
+      "Пальпація, термодіагностика, фарбування",
+      "Зондування, електроодонтодіагностика"
+    ],
+    a: 1,
+    e: "Огляд проводять дзеркалом у денному світлі. Зондування виявляє карієс, кишені та шорсткості. Перкусія (легке постукування) оцінює стан періодонта, пальпація — слизову й м’які тканини. Клінічно зазвичай починають з огляду, далі пальпація, перкусія і зондування."
+  },
+  {
+    t: "Інструментарій",
+    q: "Як класифікують стоматологічні інструменти?",
+    o: [
+      "За розміром: великі, середні, малі",
+      "Оглядові, для препарування, для пломбування (і допоміжні)",
+      "За матеріалом: сталеві та пластикові",
+      "За кольором ручок"
+    ],
+    a: 1,
+    e: "Оглядові інструменти: дзеркало, зонд, пінцет. Для препарування: бори, екскаватори, ложки, долота. Для пломбування: гладилки, конденсори, шпателі, щипці для матриць. Окремо виділяють допоміжні інструменти."
+  },
+  {
+    t: "Інструментарій",
+    q: "Які бувають стоматологічні наконечники та бори?",
+    o: [
+      "Турбінні (швидкісні), контрокутні (механічні), прямі; бори: стальні, твердосплавні, алмазні, полірувальні",
+      "Лише турбінні; бори — тільки стальні",
+      "Ручні та електричні ложки; бори — пластикові",
+      "Пневматичні та лазерні; бори — керамічні"
+    ],
+    a: 0,
+    e: "Турбінні наконечники працюють на високій швидкості з водяним охолодженням. Контрокутні й прямі — механічні, на низькій швидкості. Стальні бори використовують для дентину, твердосплавні — для формування порожнин, алмазні — для препарування емалі та керамики, полірувальні — для полірування."
+  },
+  {
+    t: "Стерилізація",
+    q: "Яка правильна послідовність етапів обробки стоматологічного інструментарію?",
+    o: [
+      "Стерилізація → дезінфекція → передстерилізаційне очищення",
+      "Дезінфекція → передстерилізаційне очищення → висушування → стерилізація",
+      "Передстерилізаційне очищення → стерилізація → дезінфекція",
+      "Стерилізація → висушування → дезінфекція"
+    ],
+    a: 1,
+    e: "Спочатку дезінфекція (знезараження), далі передстерилізаційне очищення (видалення білків, крові, жиру), висушування, стерилізація і зберігання у стерильній упаковці. Брудні інструменти стерилізувати не можна, бо залишки органіки захищають мікроорганізми."
+  },
+  {
+    t: "Стерилізація",
+    q: "Що виявляють азопірамова та фенолфталеїнова проби?",
+    o: [
+      "Залишки крові на інструментах після очищення, тобто якість передстерилізаційного очищення",
+      "Стерильність інструментів після автоклавування",
+      "Концентрацію дезінфектанту в розчині",
+      "Температуру в сухожаровій шафі"
+    ],
+    a: 0,
+    e: "Ці проби контролюють якість передстерилізаційного очищення: вони реагують на залишки крові. Позитивна реакція дає забарвлення (синьо-зелене — азопірамова, малиново-рожеве — фенолфталеїнова), і очищення треба повторити. Самі проби не доводять стерильність."
+  },
+  {
+    t: "Стерилізація",
+    q: "Які сучасні методи стерилізації застосовують у стоматології?",
+    o: [
+      "Кип’ятіння протягом 5 хвилин у воді",
+      "Автоклавування (водяна пара під тиском), сухожарова шафа, хімічна стерилізація",
+      "Протирання спиртом 70% як стерилізація",
+      "Миття в пральній машині"
+    ],
+    a: 1,
+    e: "Найпоширеніше — автоклавування (пара під тиском, близько 121–134 °C). Сухожарові шафи використовують сухе гаряче повітря (близько 160–180 °C) для металевих інструментів. Хімічна (холодна) стерилізація застосовується для термолабільних виробів. Кип’ятіння і спирт — це дезінфекція, а не стерилізація."
+  },
+  {
+    t: "Прикуси",
+    q: "Які прикуси в тимчасовому прикусі вважаються фізіологічними?",
+    o: [
+      "Глибокий, відкритий, перехресний",
+      "Прямий, з мезіальним уступом, з дистальним уступом",
+      "Прогенічний і прогнатичний",
+      "Лише ортогнатичний без винятків"
+    ],
+    a: 1,
+    e: "У тимчасовому прикусі фізіологічними є прямий прикус (без перекриття), прикус із мезіальним уступом (ступенькою вперед) і з дистальним уступом (ступенькою назад). Дистальний уступ часто є нормальним шляхом для формування прикусу постійних зубів. Ортогнатичний прикус — норма для постійного прикусу."
+  },
+  {
+    t: "Прикуси",
+    q: "Які види патологічних прикусів існують?",
+    o: [
+      "Ортогнатичний, прямий, з мезіальним уступом",
+      "Глибокий, відкритий, перехресний, прогнатія, прогенія",
+      "Тільки глибокий прикус",
+      "Фізіологічний уступ і пряма посмішка"
+    ],
+    a: 1,
+    e: "До патологічних належать глибокий прикус (перекриття понад третину коронок нижніх різців), відкритий, перехресний, прогнатія (випередження верхньої щелепи) і прогенія (випередження нижньої). Також розрізняють дистальний (клас II) і мезіальний (клас III) прикуси за Ешем."
+  },
+  {
+    t: "Матеріали",
+    q: "Як класифікують стоматологічні матеріали?",
+    o: [
+      "За кольором і ціною",
+      "За призначенням (пломбувальні, відбиткові, ортопедичні тощо) та за складом (металеві, неметалеві)",
+      "Тільки за походженням: природні чи штучні",
+      "За розміром упаковки"
+    ],
+    a: 1,
+    e: "Матеріали поділяють за призначенням (профілактичні, пломбувальні, відбиткові, ізолювальні, протезні) та за хімічною природою. Металеві — це сплави. Неметалеві бувають полімерні (пластмаси, композити) та неорганічні (кераміка, цементи)."
+  },
+  {
+    t: "Гігієна",
+    q: "Як класифікують зубні пасти?",
+    o: [
+      "За смаком і кольором",
+      "Дитячі та дорослі, без поділу на види",
+      "Гігієнічні, лікувально-профілактичні та лікувальні за показаннями",
+      "За ціною і упаковкою"
+    ],
+    a: 2,
+    e: "Гігієнічні пасти призначені для щоденного очищення. Лікувально-профілактичні містять фториди, кальцій або гідроксиапатит і зміцнюють емаль, знижуючи ризик карієсу. Лікувальні пасти містять спеціальні компоненти: проти гіперчутливості, протизапальні, відбілювальні чи проти зубного каменю."
+  }
+];
 
-        // Render Study Cards
-        function renderStudyCards(items) {
-            const container = document.getElementById('cards-container');
-            const noResults = document.getElementById('no-results');
+/* ==========================================================
+   СТАН І ЕЛЕМЕНТИ
+   ========================================================== */
+const TOTAL = QUESTIONS.length;
+const $ = (id) => document.getElementById(id);
 
-            if (items.length === 0) {
-                container.innerHTML = '';
-                noResults.classList.remove('hidden');
-                return;
-            }
+const el = {
+  quiz: $("screen-quiz"),
+  result: $("screen-result"),
+  question: $("question"),
+  topic: $("topic"),
+  card: $("question-card"),
+  options: $("options"),
+  feedback: $("feedback"),
+  fbIcon: $("fb-icon"),
+  fbTitle: $("fb-title"),
+  fbText: $("fb-text"),
+  next: $("next"),
+  nextLabel: $("next-label"),
+  bar: $("bar"),
+  counter: $("counter"),
+  percentLive: $("percent-live"),
+  scoreLive: $("score-live"),
+  restart: $("restart")
+};
 
-            noResults.classList.add('hidden');
-            container.innerHTML = items.map(item => {
-                const isMastered = masteredCards.includes(item.id);
-                return `
-                    <div class="glass-panel ${isMastered ? 'glass-panel-active border-cyan-500/40' : ''} rounded-2xl p-5 shadow-xl hover:border-slate-600 transition-all flex flex-col justify-between group" id="card-${item.id}">
-                        <div>
-                            <div class="flex items-center justify-between gap-2 mb-3">
-                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-950/80 text-cyan-300 border border-blue-500/30">
-                                    ${item.categoryName}
-                                </span>
-                                <label class="flex items-center gap-1.5 text-xs text-slate-400 font-medium cursor-pointer select-none">
-                                    <input type="checkbox" onchange="toggleMastered(${item.id})" ${isMastered ? 'checked' : ''} class="w-4 h-4 text-cyan-500 rounded bg-dark-900 border-slate-700 focus:ring-cyan-500">
-                                    <span class="${isMastered ? 'text-cyan-300 font-bold' : ''}">Вивчено</span>
-                                </label>
-                            </div>
-                            <h3 class="text-sm sm:text-base font-bold text-white mb-2 leading-snug">${item.title}</h3>
-                            <p class="text-xs text-slate-300 bg-dark-900/80 p-3 rounded-xl border border-slate-800/80 mb-4">
-                                <i class="fa-solid fa-bolt text-amber-400 mr-1"></i> <b>Суть:</b> ${item.shortAns}
-                            </p>
-                        </div>
+let order = [];      // порядок питань
+let perm = [];       // перестановка варіантів поточного питання
+let correctPos = 0;  // позиція правильної відповіді після перестановки
+let idx = 0;         // поточний індекс
+let score = 0;
+let answered = false;
 
-                        <div>
-                            <button onclick="toggleAnswer(${item.id})" id="btn-ans-${item.id}" class="w-full py-2 bg-dark-850 hover:bg-slate-800 text-slate-300 text-xs font-bold rounded-xl border border-slate-700/60 transition flex items-center justify-center gap-2">
-                                <span>Повна відповідь</span>
-                                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-200" id="icon-ans-${item.id}"></i>
-                            </button>
-                            <div id="ans-${item.id}" class="hidden mt-3 pt-3 border-t border-slate-800 text-slate-300">
-                                ${item.fullAns}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+/* Фішер–Єйтс */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-        function toggleAnswer(id) {
-            const ansDiv = document.getElementById(`ans-${id}`);
-            const icon = document.getElementById(`icon-ans-${id}`);
-            const btnSpan = document.getElementById(`btn-ans-${id}`).querySelector('span');
+const LETTERS = ["А", "Б", "В", "Г", "Д", "Е"];
 
-            if (ansDiv.classList.contains('hidden')) {
-                ansDiv.classList.remove('hidden');
-                icon.classList.add('rotate-180');
-                btnSpan.innerText = "Сховати відповідь";
-            } else {
-                ansDiv.classList.add('hidden');
-                icon.classList.remove('rotate-180');
-                btnSpan.innerText = "Повна відповідь";
-            }
-        }
+/* ==========================================================
+   ЛОГІКА ТЕСТУ
+   ========================================================== */
+function startQuiz() {
+  order = shuffle([...Array(TOTAL).keys()]);
+  idx = 0;
+  score = 0;
+  el.result.classList.add("hidden");
+  el.quiz.classList.remove("hidden");
+  el.quiz.style.display = "";
+  renderQuestion();
+  updateProgress();
+}
 
-        function toggleMastered(id) {
-            if (masteredCards.includes(id)) {
-                masteredCards = masteredCards.filter(cardId => cardId !== id);
-            } else {
-                masteredCards.push(id);
-            }
-            localStorage.setItem('stomat_mastered_dark', JSON.stringify(masteredCards));
-            filterStudyCards();
-            updateMasteredProgress();
-        }
+function renderQuestion() {
+  answered = false;
+  const item = QUESTIONS[order[idx]];
 
-        function updateMasteredProgress() {
-            const total = studyData.length;
-            const count = masteredCards.length;
-            const percent = Math.round((count / total) * 100);
+  // Перемішуємо варіанти, щоб правильна відповідь не була завжди на одному місці
+  perm = shuffle([...item.o.keys()]);
+  correctPos = perm.indexOf(item.a);
 
-            document.getElementById('mastered-count').innerText = `${count} з ${total} вивчено (${percent}%)`;
-            document.getElementById('mastered-progress-bar').style.width = `${percent}%`;
-        }
+  // Текст питання з м’якою появою
+  el.topic.textContent = item.t;
+  el.question.textContent = item.q;
+  el.card.classList.remove("fade-up");
+  void el.card.offsetWidth;
+  el.card.classList.add("fade-up");
 
-        function filterStudyCards() {
-            const query = document.getElementById('study-search').value.toLowerCase().trim();
-            const category = document.getElementById('category-filter').value;
+  // Варіанти
+  el.options.innerHTML = "";
+  perm.forEach((originalIndex, pos) => {
+    const btn = document.createElement("button");
+    btn.className = "opt glass-inner fade-up";
+    btn.style.animationDelay = `${pos * 60}ms`;
+    btn.type = "button";
+    btn.dataset.pos = pos;
 
-            const filtered = studyData.filter(item => {
-                const matchesCategory = (category === 'all') || (item.category === category);
-                const matchesQuery = item.title.toLowerCase().includes(query) || 
-                                     item.shortAns.toLowerCase().includes(query) ||
-                                     item.fullAns.toLowerCase().includes(query);
-                return matchesCategory && matchesQuery;
-            });
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = LETTERS[pos] || (pos + 1);
 
-            renderStudyCards(filtered);
-        }
+    const text = document.createElement("span");
+    text.textContent = item.o[originalIndex];
 
-        function quickFilter(keyword) {
-            document.getElementById('study-search').value = keyword;
-            filterStudyCards();
-        }
+    btn.append(letter, text);
+    btn.addEventListener("click", () => choose(pos));
+    el.options.appendChild(btn);
+  });
 
-        function resetFilters() {
-            document.getElementById('study-search').value = '';
-            document.getElementById('category-filter').value = 'all';
-            filterStudyCards();
-        }
+  // Скидання фідбеку та кнопки
+  el.feedback.classList.add("hidden", "hidden-state");
+  el.feedback.classList.remove("glow-ok", "glow-bad");
+  el.next.disabled = true;
+  el.nextLabel.textContent = idx === TOTAL - 1 ? "Завершити тест" : "Наступне питання";
+  el.next.querySelector("i").className = idx === TOTAL - 1
+    ? "fa-solid fa-flag-checkered"
+    : "fa-solid fa-arrow-right";
 
+  el.counter.textContent = `Питання ${idx + 1} з ${TOTAL}`;
+}
 
-        // ================= QUIZ ENGINE =================
+function choose(pos) {
+  if (answered) return;
+  answered = true;
 
-        function loadQuizQuestion(index) {
-            currentQuizIndex = index;
-            const q = quizData[index];
+  const item = QUESTIONS[order[idx]];
+  const buttons = [...el.options.querySelectorAll(".opt")];
+  const isCorrect = pos === correctPos;
 
-            document.getElementById('current-question-num').innerText = index + 1;
-            document.getElementById('quiz-step-text').innerText = `${index + 1} з 20`;
-            document.getElementById('quiz-category-tag').innerText = getCategoryName(q.id);
-            document.getElementById('quiz-question-text').innerText = `${q.id}. ${q.question}`;
-            
-            const optionsContainer = document.getElementById('quiz-options-container');
-            const feedbackBox = document.getElementById('quiz-feedback');
-            
-            feedbackBox.classList.add('hidden');
+  if (isCorrect) score++;
 
-            const prevUserChoice = quizAnswers[index];
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    if (i === correctPos) b.classList.add("is-correct");
+    else if (i === pos) b.classList.add("is-wrong");
+    else b.classList.add("is-dim");
+  });
 
-            optionsContainer.innerHTML = q.options.map((optionText, optIdx) => {
-                let btnStyle = "bg-dark-900/90 border-slate-800 text-slate-200 hover:border-slate-600 hover:bg-slate-800/50";
-                let iconHtml = `<span class="w-6 h-6 rounded-full border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400 mr-3">${String.fromCharCode(65 + optIdx)}</span>`;
+  // Фідбек
+  el.feedback.classList.remove("hidden");
+  requestAnimationFrame(() => {
+    el.feedback.classList.remove("hidden-state");
+  });
 
-                if (prevUserChoice !== null) {
-                    if (optIdx === q.correct) {
-                        btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-semibold shadow-glow-cyan";
-                        iconHtml = `<i class="fa-solid fa-circle-check text-emerald-400 text-lg mr-3"></i>`;
-                    } else if (optIdx === prevUserChoice) {
-                        btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200";
-                        iconHtml = `<i class="fa-solid fa-circle-xmark text-rose-400 text-lg mr-3"></i>`;
-                    } else {
-                        btnStyle = "bg-dark-900/40 border-slate-850 text-slate-500 opacity-40";
-                    }
-                }
+  if (isCorrect) {
+    el.feedback.classList.add("glow-ok");
+    el.fbIcon.className = "fa-solid fa-circle-check text-emerald-400 text-2xl mt-0.5 glow-ok";
+    el.fbTitle.textContent = "Правильно!";
+    el.fbTitle.className = "text-lg font-bold mb-1 text-emerald-300";
+  } else {
+    el.feedback.classList.add("glow-bad");
+    el.fbIcon.className = "fa-solid fa-circle-xmark text-rose-400 text-2xl mt-0.5 glow-bad";
+    el.fbTitle.textContent = "Неправильно";
+    el.fbTitle.className = "text-lg font-bold mb-1 text-rose-300";
+  }
+  el.fbText.textContent = item.e;
 
-                return `
-                    <button onclick="selectOption(${optIdx})" ${prevUserChoice !== null ? 'disabled' : ''} 
-                        class="w-full p-3.5 sm:p-4 text-left rounded-xl border-2 transition-all flex items-center ${btnStyle}">
-                        ${iconHtml}
-                        <span class="text-xs sm:text-sm flex-1 leading-snug">${optionText}</span>
-                    </button>
-                `;
-            }).join('');
+  el.next.disabled = false;
+  updateScore();
+  setTimeout(() => {
+    el.feedback.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, 250);
+}
 
-            if (prevUserChoice !== null) {
-                showFeedback(prevUserChoice === q.correct, q.explanation);
-            }
+function next() {
+  if (!answered) return;
+  if (idx < TOTAL - 1) {
+    idx++;
+    renderQuestion();
+    updateProgress();
+  } else {
+    showResult();
+  }
+}
 
-            document.getElementById('prev-btn').disabled = (index === 0);
-            
-            const nextBtn = document.getElementById('next-btn');
-            if (index === quizData.length - 1) {
-                nextBtn.innerHTML = `Завершити тест <i class="fa-solid fa-check ml-1"></i>`;
-                nextBtn.className = "px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-2";
-            } else {
-                nextBtn.innerHTML = `Наступне <i class="fa-solid fa-arrow-right"></i>`;
-                nextBtn.className = "px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-navy-600 hover:from-blue-500 text-white font-bold text-xs shadow-glow-blue transition flex items-center gap-2";
-            }
+function updateScore() {
+  el.scoreLive.textContent = score;
+}
 
-            updateQuizCounters();
-        }
+function updateProgress() {
+  const done = idx + (answered ? 1 : 0);
+  const pct = Math.round((done / TOTAL) * 100);
+  el.bar.style.width = pct + "%";
+  el.percentLive.textContent = Math.round((score / TOTAL) * 100) + "%";
+}
 
-        function selectOption(optIndex) {
-            const q = quizData[currentQuizIndex];
-            quizAnswers[currentQuizIndex] = optIndex;
+function showResult() {
+  const percent = Math.round((score / TOTAL) * 100);
+  const wrong = TOTAL - score;
 
-            const isCorrect = (optIndex === q.correct);
-            showFeedback(isCorrect, q.explanation);
+  el.quiz.classList.add("hidden");
+  el.result.classList.remove("hidden");
+  el.result.classList.remove("fade-in");
+  void el.result.offsetWidth;
+  el.result.classList.add("fade-in");
 
-            loadQuizQuestion(currentQuizIndex);
-        }
+  $("result-percent").textContent = percent + "%";
+  $("result-points").textContent = score;
+  $("result-wrong").textContent = wrong;
 
-        function showFeedback(isCorrect, explanation) {
-            const feedbackBox = document.getElementById('quiz-feedback');
-            const icon = document.getElementById('feedback-icon');
-            const title = document.getElementById('feedback-title');
-            const text = document.getElementById('feedback-text');
+  let msg;
+  if (percent >= 90) msg = "Відмінно! Матеріал засвоєно впевнено, ви готові до заліку.";
+  else if (percent >= 75) msg = "Дуже добре. Залишилося трохи підтягнути окремі теми.";
+  else if (percent >= 60) msg = "Непогано. Повторіть питання, де були помилки, і спробуйте знову.";
+  else msg = "Варто ще раз опрацювати конспект і пройти тест повторно.";
+  $("result-message").textContent = msg;
 
-            feedbackBox.classList.remove('hidden');
+  const ring = $("ring");
+  ring.style.setProperty("--p", 0);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => ring.style.setProperty("--p", percent));
+  });
 
-            if (isCorrect) {
-                feedbackBox.className = "mt-6 p-4 rounded-xl border bg-emerald-950/60 border-emerald-500/40 text-emerald-200";
-                icon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
-                title.innerText = "Правильно!";
-            } else {
-                feedbackBox.className = "mt-6 p-4 rounded-xl border bg-rose-950/60 border-rose-500/40 text-rose-200";
-                icon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>`;
-                title.innerText = "Помилка!";
-            }
+  el.bar.style.width = "100%";
+}
 
-            text.innerText = explanation;
-        }
+/* ==========================================================
+   ПОДІЇ
+   ========================================================== */
+el.next.addEventListener("click", next);
+el.restart.addEventListener("click", () => {
+  startQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
-        function navigateQuiz(direction) {
-            const newIndex = currentQuizIndex + direction;
+document.addEventListener("keydown", (e) => {
+  if (el.result.classList.contains("hidden") === false) return;
+  if (e.key === "Enter" && !el.next.disabled) next();
+});
 
-            if (newIndex >= quizData.length) {
-                showQuizResults();
-            } else if (newIndex >= 0) {
-                loadQuizQuestion(newIndex);
-            }
-        }
-
-        function updateQuizCounters() {
-            const answered = quizAnswers.filter(a => a !== null).length;
-            let score = 0;
-            quizAnswers.forEach((ans, idx) => {
-                if (ans === quizData[idx].correct) score++;
-            });
-
-            document.getElementById('live-score').innerText = score;
-            document.getElementById('answered-count').innerText = answered;
-        }
-
-        function showQuizResults() {
-            document.getElementById('quiz-card').classList.add('hidden');
-            const resultsDiv = document.getElementById('quiz-results');
-            resultsDiv.classList.remove('hidden');
-
-            let score = 0;
-            quizAnswers.forEach((ans, idx) => {
-                if (ans === quizData[idx].correct) score++;
-            });
-
-            const percent = Math.round((score / quizData.length) * 100);
-            
-            document.getElementById('res-score').innerText = `${score}/20`;
-            document.getElementById('res-percent').innerText = `${percent}%`;
-
-            const gradeBadge = document.getElementById('res-grade-badge');
-            const msg = document.getElementById('res-message');
-
-            if (percent >= 90) {
-                gradeBadge.innerText = "5 (A)";
-                gradeBadge.className = "text-xl sm:text-2xl font-black text-emerald-400";
-                msg.innerText = "Відмінний результат! Ви гарно засвоїли теми першого курсу та готові до заліку.";
-            } else if (percent >= 75) {
-                gradeBadge.innerText = "4 (B/C)";
-                gradeBadge.className = "text-xl sm:text-2xl font-black text-cyan-400";
-                msg.innerText = "Добре! Більшість питань опрацьовано. Перегляньте теми з помилками у режимі карточок.";
-            } else if (percent >= 60) {
-                gradeBadge.innerText = "3 (D/E)";
-                gradeBadge.className = "text-xl sm:text-2xl font-black text-amber-400";
-                msg.innerText = "Задовільно. Зверніть додаткову увагу на дезінфекцію, стертисті та зубні формули.";
-            } else {
-                gradeBadge.innerText = "2 (F)";
-                gradeBadge.className = "text-xl sm:text-2xl font-black text-rose-400";
-                msg.innerText = "Потрібно повторити курс! Пройдіть карточки знань ще раз перед наступною спробою.";
-            }
-        }
-
-        function restartQuiz() {
-            quizAnswers = new Array(quizData.length).fill(null);
-            document.getElementById('quiz-results').classList.add('hidden');
-            document.getElementById('quiz-card').classList.remove('hidden');
-            loadQuizQuestion(0);
-        }
-
-        function getCategoryName(id) {
-            const card = studyData.find(item => item.id === id);
-            return card ? card.categoryName : "Стоматологія";
-        }
-    </script>
+startQuiz();
+</script>
 </body>
 </html>
